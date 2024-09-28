@@ -23,6 +23,20 @@ parser.add_argument('--hole_min_h', type=int, default=24)
 parser.add_argument('--hole_max_h', type=int, default=48)
 
 
+def generate_mask(shape, center_x=None, center_y=None):
+    mask = np.ones(shape, dtype=np.float32)
+    if center_x is not None and center_y is not None:
+        # 假设我们创建一个大小为 (args.mask_size, args.mask_size) 的方形掩码
+        mask_size = args.mask_size
+        half_size = mask_size // 2
+        x_min = max(center_x - half_size, 0)
+        x_max = min(center_x + half_size, shape[2])
+        y_min = max(center_y - half_size, 0)
+        y_max = min(center_y + half_size, shape[1])
+        mask[:, :, y_min:y_max, x_min:x_max] = 0
+    return mask
+
+
 def main(args):
 
     args.model = os.path.expanduser(args.model)
@@ -49,6 +63,14 @@ def main(args):
     x = transforms.ToTensor()(img)
     x = torch.unsqueeze(x, dim=0)
 
+    xWidth = x.shape[3]
+    xHeight = x.shape[2]
+    print(xWidth, xHeight)
+    width = 160
+    height = 160
+    generateX = (xWidth - width) // 2
+    generateY = (xHeight - height) // 2
+
     # create mask
     mask = gen_input_mask(
         shape=(1, 1, x.shape[2], x.shape[3]),
@@ -56,6 +78,7 @@ def main(args):
             (args.hole_min_w, args.hole_max_w),
             (args.hole_min_h, args.hole_max_h),
         ),
+        hole_area=[(generateX, generateY), (width, height)],
         max_holes=args.max_holes,
     )
 
