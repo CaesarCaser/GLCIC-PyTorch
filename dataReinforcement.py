@@ -38,6 +38,12 @@ def addGaussianNoise(image, percentage):
     return G_Noising
 
 
+# 去高斯噪声
+def removeGaussianNoise(noisy_img):
+    gaussian_filter = cv2.GaussianBlur(noisy_img, (3, 3), 0)
+    cv2.imwrite(r'D:\4.Codes\GLCIC-PyTorch\datasets\evaluate\denoised_gaussian.png', gaussian_filter)
+
+
 # 共402张图片，目标增强1206张，分别以旋转、镜像、高斯噪声进行处理
 def dataReinForce(inPutPath, outPutPath):
     i = "1"
@@ -59,6 +65,9 @@ def dataReinForce(inPutPath, outPutPath):
 
 
 if __name__ == '__main__':
-    inputPath = r'D:\1.Data\screenIMG'
-    outputPath = r'D:\1.Data\screenReinforIMG'
-    dataReinForce(inputPath, outputPath)
+    # inputPath = r'D:\1.Data\inputIMG'
+    # outputPath = r'D:\1.Data\inputReinforIMG'
+    # dataReinForce(inputPath, outputPath)
+    imagePath = r'D:\4.Codes\GLCIC-PyTorch\datasets\evaluate\impro2.png'
+    noiseImg = cv2.imread(imagePath)
+    removeGaussianNoise(noiseImg)

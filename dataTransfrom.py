@@ -11,8 +11,6 @@ transform = transforms.Compose([
 ])
 
 
-
-
 def singleImageTransform(imgPath, imgName):
     image_path = os.path.join(imgPath, imgName)
     img = Image.open(image_path)
@@ -52,6 +50,8 @@ if __name__ == '__main__':
     # path = r'E:\GLCIC\GLCIC-PyTorch\images\transform'
     # imageName = 'guideFilter4.png'
     # 定义文件夹路径
-    directory_to_search = r'D:\1.Data\temp'  # 替换为你的文件夹路径
-    output_directory = r'D:\1.Data\temp'  # 替换为你的输出文件夹路径
-    batchImageTransform(directory_to_search, output_directory)
+    directory_to_search = r'D:\4.Codes\GLCIC-PyTorch\datasets\evaluate'  # 替换为你的文件夹路径
+    output_directory = r'D:\4.Codes\GLCIC-PyTorch\datasets\evaluate'  # 替换为你的输出文件夹路径
+    # batchImageTransform(directory_to_search, output_directory)
+    imgName = 'origin4-1.png'
+    singleImageTransform(directory_to_search, imgName)
